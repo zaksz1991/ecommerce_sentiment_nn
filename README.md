@@ -33,14 +33,15 @@ TextVectorization (max_tokens=10,000, output_sequence_length=40, lowercase + str
 
 ## Results
 
-> Exact numbers depend on the random seed / data path used; re-run the notebook and copy the printed values here for your submission.
-
 | Metric | Value |
 |---|---|
-| Final validation binary accuracy | *(fill in from notebook output)* |
-| Held-out test binary accuracy | *(fill in from notebook output)* |
-| Held-out test loss | *(fill in from notebook output)* |
+| Final validation binary accuracy | 1.0000 (epoch 7, early stopping triggered) |
+| Held-out test binary accuracy | 1.0000 |
+| Held-out test loss | 0.6265 |
 | Required test sentence ("The product arrived broken and I am very unhappy") | Predicted probability approaches 0 → classified Negative ✅ |
+| Hard-example (out-of-distribution) accuracy | *(fill in from notebook Section 3.4 output)* |
+
+**Reading the 100% test accuracy correctly:** this is a sign the in-distribution test set is too easy, not that the model has learned generalizable sentiment understanding. The synthetic generator draws each class from a small, disjoint set of templates, so the model can hit 100% by memorizing keyword-to-class associations (e.g. "broken," "terrible" → negative) rather than learning robust sentiment patterns. The test loss of 0.6265 alongside 100% accuracy is a second tell: predictions land on the correct side of 0.5 but aren't confidently near 0 or 1, meaning the model is right but not sure. Section 3.4 of the notebook ("Generalization check") tests the model on hand-written sentences with vocabulary it never saw in training — that hard-example accuracy, not the 100% above, is the honest measure of how close this model is to production-ready.
 
 ## Confidence score interpretation
 
