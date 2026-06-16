@@ -38,6 +38,7 @@ TextVectorization (max_tokens=10,000, output_sequence_length=40, lowercase + str
 | Final validation binary accuracy | 1.0000 (epoch 7, early stopping triggered) |
 | Held-out test binary accuracy | 1.0000 |
 | Held-out test loss | 0.6265 |
+| Confusion matrix | See notebook Section 2.6 — visualized as a heatmap with classification report (precision/recall/F1 per class) |
 | Required test sentence ("The product arrived broken and I am very unhappy") | Predicted probability approaches 0 → classified Negative ✅ |
 | Hard-example (out-of-distribution) accuracy | *(fill in from notebook Section 3.4 output)* |
 
@@ -64,6 +65,7 @@ The sigmoid output is a probability-shaped score, not a guaranteed-calibrated pr
 - **Vocabulary gaps**: brand names, typos, and slang outside the 10k-token vocabulary collapse to `[UNK]`.
 - **No word order modeling**: `GlobalAveragePooling1D` ignores sequence, weakening negation/intensifier handling (an LSTM/GRU or small Transformer would likely help).
 - **Domain shift**: the default dataset is synthetic/templated; before production use, retrain and validate on real labeled reviews from the target store.
+- **Data drift over time**: customer language evolves (new slang, seasonal phrasing, deliberate misspellings); since the vocabulary is frozen at training time, words outside it collapse to `[UNK]` regardless of sentiment content, so performance can quietly degrade as live language drifts from the training distribution. Track OOV rate and routing-band proportions over time, and retrain periodically on freshly labeled reviews rather than treating the model as train-once.
 - **Calibration**: sigmoid scores should be calibrated (e.g. temperature scaling) against real labeled data before fully trusting the 0.20/0.50 thresholds in production.
 - **Monitoring**: track queue-volume breakdown and sampled human-reviewed outcomes over time to catch model drift.
 
