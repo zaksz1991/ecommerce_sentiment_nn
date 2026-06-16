@@ -38,9 +38,10 @@ TextVectorization (max_tokens=10,000, output_sequence_length=40, lowercase + str
 | Final validation binary accuracy | 1.0000 (epoch 7, early stopping triggered) |
 | Held-out test binary accuracy | 1.0000 |
 | Held-out test loss | 0.6265 |
-| Confusion matrix | See notebook Section 2.6 — visualized as a heatmap with classification report (precision/recall/F1 per class) |
-| Required test sentence ("The product arrived broken and I am very unhappy") | Predicted probability approaches 0 → classified Negative ✅ |
-| Hard-example (out-of-distribution) accuracy | *(fill in from notebook Section 3.4 output)* |
+| Confusion matrix (TN, FP, FN, TP) | <<< paste the 2x2 matrix from notebook cell [14] here, e.g. [[48, 2], [0, 50]] >>> |
+| Precision / Recall / F1 (per class) | <<< paste the classification_report numbers from cell [14] here >>> |
+| Required test sentence ("The product arrived broken and I am very unhappy") | Predicted probability <<< paste the exact number from cell [15], e.g. 0.0842 >>> → classified Negative ✅ |
+| Hard-example (out-of-distribution) accuracy | <<< paste the "Hard-example accuracy: 0.XX" line from the Section 3.4 cell >>> |
 
 **Reading the 100% test accuracy correctly:** this is a sign the in-distribution test set is too easy, not that the model has learned generalizable sentiment understanding. The synthetic generator draws each class from a small, disjoint set of templates, so the model can hit 100% by memorizing keyword-to-class associations (e.g. "broken," "terrible" → negative) rather than learning robust sentiment patterns. The test loss of 0.6265 alongside 100% accuracy is a second tell: predictions land on the correct side of 0.5 but aren't confidently near 0 or 1, meaning the model is right but not sure. Section 3.4 of the notebook ("Generalization check") tests the model on hand-written sentences with vocabulary it never saw in training — that hard-example accuracy, not the 100% above, is the honest measure of how close this model is to production-ready.
 
