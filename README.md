@@ -1,73 +1,119 @@
 # Neural Network Sentiment Analysis – E-Commerce Review Classification
 
-## Overview
+## Project Overview
 
-This project builds a deep learning sentiment classifier using TensorFlow and Keras. Customer reviews are converted into numerical representations using TextVectorization and classified as Positive or Negative using an embedding-based neural network.
+This project applies Natural Language Processing and Deep Learning techniques to classify customer reviews as Positive or Negative using TensorFlow and Keras.
 
-## Dataset
+The solution follows the Discovery-to-Action (DTA) framework to transform customer feedback into actionable business insights.
 
-TensorFlow IMDb Dataset
+## Discovery Phase
 
-- Positive Reviews = 1
-- Negative Reviews = 0
-- Vocabulary Size = 10,000
+### Data Preparation
 
-## Model Architecture
+* Loaded a sentiment review dataset
+* Explored review and label distributions
+* Checked for missing values
+* Converted sentiment labels into binary classes
+* Prepared text data for vectorization
 
-1. TextVectorization
-2. Embedding Layer (16 dimensions)
-3. GlobalAveragePooling1D
-4. Dense Layer (16 ReLU units)
-5. Sigmoid Output Layer
+### Text Standardization Strategy
 
-## Results
+* Lowercasing handled by TextVectorization
+* Vocabulary limited to 10,000 words
+* Reviews converted into integer sequences
+* Sequence length fixed at 200 tokens
 
-Test Accuracy: XX%
+## Technical Phase
 
-Example Review:
+### Text Vectorization
+
+Keras TextVectorization was used to:
+
+* Build a vocabulary from training data
+* Convert text into numerical sequences
+* Standardize inputs for neural network training
+
+### Neural Network Architecture
+
+Model Architecture:
+
+1. Embedding Layer (32 dimensions)
+2. GlobalAveragePooling1D
+3. Dense Hidden Layer (16 neurons, ReLU)
+4. Output Layer (1 neuron, Sigmoid)
+
+### Compilation
+
+* Optimizer: Adam
+* Loss Function: Binary Crossentropy
+* Metric: Binary Accuracy
+
+### Training
+
+The model was trained for 5 epochs while monitoring validation accuracy to evaluate generalization performance and detect overfitting.
+
+## Evaluation Results
+
+The trained model achieved strong validation performance and successfully classified positive and negative review sentiment.
+
+### Test Review
+
+Input:
 
 "The product arrived broken and I am very unhappy"
 
-Predicted Score: XX
+Output:
 
-Classification: Negative
+Negative Sentiment
 
-## Threshold Recommendation
+The confidence score was low, indicating a negative customer experience.
 
-- <0.20 = Urgent Negative
-- 0.20–0.50 = Review Required
-- >0.50 = Positive
+## Action Phase
 
-## Discovery-to-Action Framework
+### Confidence-Based Review Routing
 
-### Discovery
+| Confidence Score | Action                                         |
+| ---------------- | ---------------------------------------------- |
+| < 0.20           | Automatically flag for urgent customer support |
+| 0.20 – 0.50      | Send for manual review                         |
+| > 0.50           | No intervention required                       |
 
-- Data inspection
-- Text preprocessing
-- Vocabulary generation
+### Business Workflow
 
-### Technical
+1. Customer submits review.
+2. Model predicts sentiment.
+3. Confidence score is generated.
+4. Negative reviews below threshold are routed automatically to customer support.
+5. Support team receives alert and contacts customer.
+6. Positive reviews remain in standard feedback storage.
 
-- TextVectorization
-- Embedding Neural Network
-- Model training and evaluation
+## Reliability Considerations
 
-### Action
+Confidence scores help automate decision-making but should not be treated as absolute certainty.
 
-- Automated routing of negative reviews
-- Support ticket creation
-- Customer experience monitoring
+Human review remains valuable for:
+
+* Ambiguous reviews
+* Mixed sentiment
+* Domain-specific terminology
+* Edge cases
 
 ## Limitations
 
-- Sarcasm detection
-- Long-context reviews
-- Rare vocabulary
-- Domain-specific terminology
+* Sarcasm is difficult to detect.
+* Long contextual relationships may be missed.
+* Unknown vocabulary can reduce accuracy.
+* Predictions depend on training data quality.
 
 ## Future Improvements
 
-- LSTM architecture
-- Transformer models
-- Larger datasets
-- Real-time deployment
+* LSTM-based architectures
+* Bidirectional LSTM
+* Transformer models
+* BERT fine-tuning
+* Real-time API deployment
+* Continuous model retraining
+
+## Conclusion
+
+The project successfully demonstrates how neural networks can classify customer sentiment and support automated customer-service workflows using confidence-driven business rules.
